@@ -16,26 +16,19 @@ class Router {
             console.log(password);
             email = email.toLowerCase();
 
-            if (email.length > 12 || password.length > 12) {
-                res.json({
-                    success: false,
-                    msg: 'An error occured, please try again'
-                })
-                return;
-            }
-            
             let cols = [email];
             db.query('SELECT * FROM user WHERE email = ? LIMIT 1', cols, (err, data, fields) =>  {
                 if (err) {
                     res.json({
                         success: false,
-                        msg: 'An error occured, please try again'
+                        msg: 'An error occured, please try one more time'
                     })
                     return;
                 }
 
                 // Found 1 user with this email
-                if (data && data.length === 1) {
+                //if (data && data.length === 1) {
+                if (data){
 
                     bcrypt.compare(password, data[0].password, (bcryptErr, verified) => {
                        if (verified) {
